@@ -1,8 +1,11 @@
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
 // import morgan from "morgan";
-import { patientRouter } from "./modules/patient/index";
-import { encounterRouter } from "./modules/encounter";
+import { authRouter } from "./modules/auth";
+import { productTypeRoute } from "./modules/productType";
+
+dotenv.config();
 
 export const app = express();
 
@@ -11,5 +14,8 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/patients", patientRouter);
-app.use("/encounters", encounterRouter);
+app.use("/auth", authRouter);
+app.use("/product-type", productTypeRoute);
+
+
+
