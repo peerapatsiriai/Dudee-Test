@@ -6,6 +6,6 @@ export type MemberDTO = {
     member_status: number;
     member_created_at: Date;
     member_updated_at: Date;
-    member_deleted_at?: Date;
+    member_deleted_at?: Date | null;
   };
   

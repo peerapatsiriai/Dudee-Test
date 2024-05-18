@@ -32,15 +32,15 @@ model Member {
 }
 
 model Cart {
-  cart_id           Int       @id @default(autoincrement())
-  product_id        Int
+  cart_id           Int           @id @default(autoincrement())
+  product_type_id   Int
   member_id         Int
   cart_status       Int
-  cart_created_at   DateTime  @default(now())
-  cart_updated_at   DateTime  @updatedAt
+  cart_created_at   DateTime      @default(now())
+  cart_updated_at   DateTime      @updatedAt
   cart_deleted_at   DateTime?
-  Product           Product   @relation(fields: [product_id], references: [product_id])
-  Member            Member    @relation(fields: [member_id], references: [member_id])
+  ProductType       ProductType   @relation(fields: [product_type_id], references: [product_type_id])
+  Member            Member        @relation(fields: [member_id], references: [member_id])
   orders            Order[]
 }
 
@@ -51,7 +51,7 @@ model Product {
   product_created_at  DateTime  @default(now())
   product_updated_at  DateTime  @updatedAt
   product_deleted_at  DateTime?
-  carts               Cart[]
+  orders              Order[]
 }
 
 model ProductType {
@@ -65,17 +65,20 @@ model ProductType {
   product_type_created_at DateTime @default(now())
   product_type_updated_at DateTime @updatedAt
   product_type_deleted_at DateTime?
+  carts             Cart[]
 }
 
 model Order {
-  order_id          Int       @id @default(autoincrement())
+  order_id          Int              @id @default(autoincrement())
   cart_id           Int
+  product_id   Int
   promotion_id      Int
   order_status      Int
-  order_created_at  DateTime  @default(now())
-  order_updated_at  DateTime  @updatedAt
+  order_created_at  DateTime         @default(now())
+  order_updated_at  DateTime         @updatedAt
   order_deleted_at  DateTime?
-  Cart              Cart      @relation(fields: [cart_id], references: [cart_id])
+  Cart              Cart             @relation(fields: [cart_id], references: [cart_id])
+  Product           Product          @relation(fields: [product_id], references: [product_id])
 }
 
 

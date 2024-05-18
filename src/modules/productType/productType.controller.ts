@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { ProductTypeDTO } from '../../dto/productTypeInfo'
+import { ProductDTO } from '../../dto/productInfo'
 import * as productTypeService from "../../repository/productTypeRepository";
+import * as productService from "../../repository/productRepository";
 
 // Display all productType
 export const listAllProductType = async (req: Request, res: Response) => {
@@ -55,6 +57,41 @@ export const addNewProductType = async (req: Request, res: Response) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+// Add new product in Product Type
+export const addProductToProductType = async (req: Request, res: Response) => {
+    try {
+        const product_type_id = req.params.product_type_id;
+
+        // validate the request body content
+        if (!product_type_id) {
+            return res.status(400).json({ error: "Invalid request body format" });
+        }
+
+        const productType = await productTypeService.getOneProductTypeById(Number(product_type_id));
+        
+        if (!productType) {
+            return res.status(404).json({ error: 'Product type not found' });
+        }
+
+        const product = await productService.addNewProduct(Number(product_type_id));
+
+        if (!product) {
+            return res.status(500).json({ error: 'Failed to add new product' });
+        }
+
+        const countProductType = await productService.countProduct(Number(product_type_id));
+
+        if (!countProductType) {
+            return res.status(500).json({ error: 'Failed to count product' });
+        }
+
+        return res.status(201).json({ message: `Product added successfully now have ${countProductType} products in this product type` });
+        
+    } catch (error) {
+        
+    }
+}
 
 // Edit Product Type
 export const editProductType = async (req: Request, res: Response) => {

@@ -16,15 +16,7 @@ export const createMember = async (tx: any, data: { account_id: number, member_f
             },
         });
 
-        return {
-            member_id: member.member_id,
-            account_id: member.account_id,
-            member_first_name: member.member_first_name,
-            member_last_name: member.member_last_name,
-            member_status: member.member_status,
-            member_created_at: member.member_created_at,
-            member_updated_at: member.member_updated_at,
-        };
+        return member
     } catch (error) {
         throw new Error('Failed to create member.');
     }
@@ -42,15 +34,7 @@ export const getMemberByAccountId = async (account_id: number): Promise<MemberDT
             return null;
         }
 
-        return {
-            member_id: member.member_id,
-            account_id: member.account_id,
-            member_first_name: member.member_first_name,
-            member_last_name: member.member_last_name,
-            member_status: member.member_status,
-            member_created_at: member.member_created_at,
-            member_updated_at: member.member_updated_at,
-        };
+        return member;
     } catch (error) {
         throw new Error('Failed to get member by account ID.');
     }

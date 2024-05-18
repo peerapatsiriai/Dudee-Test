@@ -28,7 +28,7 @@ CREATE TABLE "Member" (
 -- CreateTable
 CREATE TABLE "Cart" (
     "cart_id" SERIAL NOT NULL,
-    "product_id" INTEGER NOT NULL,
+    "product_type_id" INTEGER NOT NULL,
     "member_id" INTEGER NOT NULL,
     "cart_status" INTEGER NOT NULL,
     "cart_created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -70,6 +70,7 @@ CREATE TABLE "ProductType" (
 CREATE TABLE "Order" (
     "order_id" SERIAL NOT NULL,
     "cart_id" INTEGER NOT NULL,
+    "product_id" INTEGER NOT NULL,
     "promotion_id" INTEGER NOT NULL,
     "order_status" INTEGER NOT NULL,
     "order_created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -86,10 +87,13 @@ CREATE UNIQUE INDEX "Account_account_username_key" ON "Account"("account_usernam
 ALTER TABLE "Member" ADD CONSTRAINT "Member_account_id_fkey" FOREIGN KEY ("account_id") REFERENCES "Account"("account_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Cart" ADD CONSTRAINT "Cart_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "Product"("product_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Cart" ADD CONSTRAINT "Cart_product_type_id_fkey" FOREIGN KEY ("product_type_id") REFERENCES "ProductType"("product_type_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Cart" ADD CONSTRAINT "Cart_member_id_fkey" FOREIGN KEY ("member_id") REFERENCES "Member"("member_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Order" ADD CONSTRAINT "Order_cart_id_fkey" FOREIGN KEY ("cart_id") REFERENCES "Cart"("cart_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Order" ADD CONSTRAINT "Order_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "Product"("product_id") ON DELETE RESTRICT ON UPDATE CASCADE;

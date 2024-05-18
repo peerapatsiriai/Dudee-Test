@@ -5,6 +5,6 @@ export type AccountDTO = {
     account_status: number;
     account_created_at: Date;
     account_updated_at: Date;
-    account_deleted_at?: Date;
+    account_deleted_at?: Date | null;
   };
   

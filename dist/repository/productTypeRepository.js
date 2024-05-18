@@ -1,21 +1,28 @@
-import { PrismaClient } from '@prisma/client';
-import { ProductTypeDTO } from '../dto/productTypeInfo';
-
-const prisma = new PrismaClient();
-
-export const getAllProductTypes = async (): Promise<ProductTypeDTO[] | null> => {
+"use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.deleteProductType = exports.updateProductType = exports.createNewProductType = exports.getOneProductTypeById = exports.getAllProductTypes = void 0;
+const client_1 = require("@prisma/client");
+const prisma = new client_1.PrismaClient();
+const getAllProductTypes = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const productTypes = await prisma.productType.findMany({
+        const productTypes = yield prisma.productType.findMany({
             where: {
                 product_type_deleted_at: null, // soft delete
             },
         });
-
         if (!productTypes || !productTypes.length) {
             return null;
         }
-
-        const productCounts = await prisma.product.groupBy({
+        const productCounts = yield prisma.product.groupBy({
             by: ['product_type_id'],
             where: {
                 product_status: 1,
@@ -25,12 +32,10 @@ export const getAllProductTypes = async (): Promise<ProductTypeDTO[] | null> => 
                 _all: true,
             },
         });
-
         const productCountMap = productCounts.reduce((acc, product) => {
             acc[product.product_type_id] = product._count._all;
             return acc;
-        }, {} as Record<number, number>);
-
+        }, {});
         return productTypes.map((productType) => ({
             product_type_id: productType.product_type_id,
             category_id: productType.category_id,
@@ -44,26 +49,26 @@ export const getAllProductTypes = async (): Promise<ProductTypeDTO[] | null> => 
             product_type_updated_at: productType.product_type_updated_at,
             product_type_deleted_at: productType.product_type_deleted_at,
         }));
-    } catch (error) {
+    }
+    catch (error) {
         console.error('Error fetching product types:', error); // Log error for debugging
         return null;
-    } finally {
-        await prisma.$disconnect();
     }
-};
-
-export const getOneProductTypeById = async (product_type_id: number): Promise<ProductTypeDTO | null> => {
+    finally {
+        yield prisma.$disconnect();
+    }
+});
+exports.getAllProductTypes = getAllProductTypes;
+const getOneProductTypeById = (product_type_id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const productType = await prisma.productType.findUnique({
+        const productType = yield prisma.productType.findUnique({
             where: {
                 product_type_id,
             },
         });
-
         if (!productType) {
             return null;
         }
-
         return {
             product_type_id: productType.product_type_id,
             category_id: productType.category_id,
@@ -76,34 +81,30 @@ export const getOneProductTypeById = async (product_type_id: number): Promise<Pr
             product_type_updated_at: productType.product_type_updated_at,
             product_type_deleted_at: productType.product_type_deleted_at,
         };
-    } catch (error) {
-        return null;
-    } finally {
-        await prisma.$disconnect();
     }
-};
-
-export const createNewProductType = async (
-    product_type_name: string,
-    product_type_description: string,
-    product_type_base_price: any,
-): Promise<ProductTypeDTO | null> => {
+    catch (error) {
+        return null;
+    }
+    finally {
+        yield prisma.$disconnect();
+    }
+});
+exports.getOneProductTypeById = getOneProductTypeById;
+const createNewProductType = (product_type_name, product_type_description, product_type_base_price) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-
-        const newProductType = await prisma.productType.create({
+        const newProductType = yield prisma.productType.create({
             data: {
                 product_type_name,
                 product_type_description,
                 product_type_base_price,
-                category_id: 1, 
+                category_id: 1,
                 product_type_status: 1, // Status 1 is Normal
-                promotion_id: 1, 
+                promotion_id: 1,
                 product_type_created_at: new Date(),
                 product_type_updated_at: new Date(),
             },
         });
-
-        const productTypeDTO: ProductTypeDTO = {
+        const productTypeDTO = {
             product_type_id: newProductType.product_type_id,
             category_id: newProductType.category_id,
             product_type_name: newProductType.product_type_name,
@@ -115,24 +116,19 @@ export const createNewProductType = async (
             product_type_updated_at: newProductType.product_type_updated_at,
             product_type_deleted_at: newProductType.product_type_deleted_at,
         };
-
         return productTypeDTO;
-    } catch (error) {
-        return null; 
-    } finally {
-        await prisma.$disconnect();
     }
-};
-
-export const updateProductType = async (
-    product_type_id: number,
-    product_type_name: string,
-    product_type_description: string,
-    product_type_base_price: any,
-): Promise<ProductTypeDTO | null> => {
+    catch (error) {
+        return null;
+    }
+    finally {
+        yield prisma.$disconnect();
+    }
+});
+exports.createNewProductType = createNewProductType;
+const updateProductType = (product_type_id, product_type_name, product_type_description, product_type_base_price) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-
-        const updatedProductType = await prisma.productType.update({
+        const updatedProductType = yield prisma.productType.update({
             where: {
                 product_type_id,
             },
@@ -144,16 +140,18 @@ export const updateProductType = async (
             },
         });
         return updatedProductType;
-    } catch (error) {
-        return null;
-    } finally {
-        await prisma.$disconnect();
     }
-}
-
-export const deleteProductType = async (product_type_id: number): Promise<boolean> => {
+    catch (error) {
+        return null;
+    }
+    finally {
+        yield prisma.$disconnect();
+    }
+});
+exports.updateProductType = updateProductType;
+const deleteProductType = (product_type_id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        await prisma.productType.update({
+        yield prisma.productType.update({
             where: {
                 product_type_id,
             },
@@ -162,9 +160,12 @@ export const deleteProductType = async (product_type_id: number): Promise<boolea
             },
         });
         return true;
-    } catch (error) {
-        return false;
-    } finally {
-        await prisma.$disconnect();
     }
-}
+    catch (error) {
+        return false;
+    }
+    finally {
+        yield prisma.$disconnect();
+    }
+});
+exports.deleteProductType = deleteProductType;

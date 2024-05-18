@@ -18,14 +18,7 @@ export const createAccount = async (tx: any, data: { account_username: string; a
             },
         });
 
-        return {
-            account_id: account.account_id,
-            account_username: account.account_username,
-            account_password: account.account_password,
-            account_status: account.account_status,
-            account_created_at: account.account_created_at,
-            account_updated_at: account.account_updated_at,
-        };
+        return account;
     } catch (error) {
         throw new Error('Failed to create account.');
     } 
@@ -43,14 +36,7 @@ export const getAccountByUsername = async (account_username: string): Promise<Ac
             return null;
         }
 
-        return {
-            account_id: account.account_id,
-            account_username: account.account_username,
-            account_password: account.account_password,
-            account_status: account.account_status,
-            account_created_at: account.account_created_at,
-            account_updated_at: account.account_updated_at,
-        };
+        return account;
     } catch (error) {
         throw new Error('Failed to get account by username.');
     } 

@@ -4,6 +4,6 @@ export type ProductDTO = {
     product_status: number;
     product_created_at: Date;
     product_updated_at: Date;
-    product_deleted_at?: Date;
+    product_deleted_at?: Date | null;
   };
   
