@@ -39,7 +39,7 @@ export const createCart = async (req: Request, res: Response) => {
 export const checkProductByCartId = async (req: Request, res: Response) => {
     try {
         const cart_id = req.params.cart_id;
-        const memberId = (req as any).memberID;
+        const memberId = (req as any).memberID; // Get memberID from middleware
 
         const currentCart: CartDTO | null = await cartService.getOneCartByCartId(Number(cart_id));
 

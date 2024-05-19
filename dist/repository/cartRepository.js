@@ -61,7 +61,6 @@ const getAllCartByMemberId = (member_id) => __awaiter(void 0, void 0, void 0, fu
         }));
     }
     catch (error) {
-        console.error('Error fetching carts by member_id:', error); // Log error for debugging
         return null;
     }
     finally {

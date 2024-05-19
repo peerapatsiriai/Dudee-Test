@@ -71,7 +71,7 @@ exports.createCart = createCart;
 const checkProductByCartId = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const cart_id = req.params.cart_id;
-        const memberId = req.memberID;
+        const memberId = req.memberID; // Get memberID from middleware
         const currentCart = yield cartService.getOneCartByCartId(Number(cart_id));
         if (!currentCart) {
             return res.status(404).json({ error: 'Cart not found' });

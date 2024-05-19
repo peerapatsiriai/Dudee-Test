@@ -50,7 +50,6 @@ export const getAllCartByMemberId = async (member_id: number): Promise<{ cart_id
             product_type_name: cart.ProductType.product_type_name
         }));
     } catch (error) {
-        console.error('Error fetching carts by member_id:', error); // Log error for debugging
         return null;
     } finally {
         await prisma.$disconnect();
