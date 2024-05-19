@@ -80,7 +80,7 @@ export const checkProductByCartId = async (req: Request, res: Response) => {
         }
         
         
-        return res.status(200).json({ message: `Cart ${cart_id} checkout successfully.`, transectionData: `` });
+        return res.status(200).json({ message: `Cart ${cart_id} checkout successfully.` });
     } catch (error) {
         return res.status(500).json({ error: error });
     }

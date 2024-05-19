@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import { Request, Response } from "express";
 // import morgan from "morgan";
 import { authRouter } from "./modules/auth";
 import { productTypeRoute } from "./modules/productType";
@@ -20,6 +21,10 @@ app.use("/auth", authRouter);
 app.use("/cart", cartRoute);
 app.use("/order", orderRoute);
 app.use("/product-type", productTypeRoute);
+
+app.get("/", (req: Request, res: Response) => {
+    res.send("hello");
+});
 
 
 
